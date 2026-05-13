@@ -1,0 +1,30 @@
+name : CI/CD workflow
+
+To:
+push:
+ branches[main]
+pull_request:
+ branches[main]
+
+jobs:
+ test:
+  runs-on:ubuntu-latest
+
+ steps:
+  -uses:action/activate@4
+  -uses:action/setup-python
+   setup python-slim:2.13
+
+  -runs:python install -r requirments.txt
+  -runs:python3 -m pytest -v
+  
+jobs:
+ build-docker:
+  runs-on:ubuntu-latest
+  needs:test
+   steps:
+    -uses:action/activate@4
+    -runs:docker compose up --build
+    -runs:commits=SHA
+    -runs:curl http://localhost:5000/api/health
+    -runs:docker compose down
