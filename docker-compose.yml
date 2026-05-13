@@ -1,0 +1,6 @@
+version:"9.1"
+
+services:
+ patient-api
+  build: .
+  port: -"5000:5000"
